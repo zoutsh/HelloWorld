@@ -1,0 +1,48 @@
+<!-- #################################################################
+     #
+     # configuration file for modules 24.11.2019 by M. Dupuis
+     #
+     # (c)2019 by VIRES Simulationstechnologie GmbH
+     #
+     #################################################################
+-->
+
+<!-- Tianshu 2020.11.16 dummy driver with perfect sensor -->
+
+<RDB>
+    <Port name="RDBraw" number="48190" type="TCP" />
+</RDB>
+<Debug    enable="true"
+          lightSource="false"
+          driver="false" />
+
+
+<!-- Tianshu 2020.11.19 target list radar: pkg 49 ; it may equal to libModuleScaleRadar.so -->
+<Sensor name="FrontRadar" type="video">
+    <Load     lib="libModuleTargetListRadar.so" path="" persistent="true" isolateNamespace="false" />
+    <Frustum  near="0.0" far="150.0" left="10.0" right="10.0" bottom="5.0" top="5.0" />
+    <Cull     maxObjects="5" enable="true" />
+    <Port     name="RDBout" number="48196" type="TCP" sendEgo="true" />
+    <Player   name="Ego" />
+    <Config   verbose="false" showHitPoints="true" colorRGBA="0x004444ff" latency="2.0"/>
+    <Origin   type="inertial" />
+    <Position dx="3.5" dy="0.0" dz="0.5" dhDeg="0.0" dpDeg="0.0" drDeg="0.0" />
+    <Database resolveRepeatedObjects="true" continuousObjectTesselation="2.0" />
+    <Filter   objectType="vehicle"/>
+    <Debug    enable="false" />
+</Sensor>
+
+<!-- Tianshu 2020.11.19 dymmy driver based on ACC -->
+<DynamicsPlugin name="DummyDriver">
+    <Load     lib="libModuleDummyDriver.so" path="" isolateNamespace="false"/>
+    <Config   desiredSpeed="40.0" 
+              minDist="10.0" 
+              maxAccel="6.0" 
+              maxDecel="-9.81" 
+              timeGap = "1.0"
+              verbose="true" />
+    <Player   name="Ego" />
+    <Source   name="FrontRadar"/>
+    <Debug    enable="false" />
+</DynamicsPlugin>
+
